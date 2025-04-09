@@ -8,13 +8,12 @@ public class SortingVisualizationRunner {
     Scene sortingScene = new Scene();
     Scanner userInput = new Scanner(System.in);
     
-    SortingAlgorithms sorting = new SortingAlgorithms();
     Visualization visualizer = new Visualization(sortingScene);
+    SortingAlgorithms sorting = new SortingAlgorithms(visualizer);
     Functions func = new Functions();
 
-    String chosenAlgorithm;
-    int chosenMax;
-    int chosenLength;
+    String chosenAlgorithm = "";
+    int chosenLength = 0;
 
     // Get input for which sorting algorithm to use
     boolean finished = false;
@@ -39,26 +38,6 @@ public class SortingVisualizationRunner {
       }
     }
 
-    // Get input for the max value of the list to be sorted
-    System.out.println("Enter the max value for your list:");
-    while (true) {
-      try {
-        int max = userInput.nextInt(); 
-        
-        if (max > 1) {
-          chosenMax = max;
-          break;
-        }
-        else {
-          System.out.println("Please enter a value greater than 1.");
-        }
-      }
-      catch (Exception e) {
-        System.out.println("Please enter an integer.");
-        userInput.next();
-      }
-    }
-
     // Get input for the amount of values in the list to be sorted
     System.out.println("Enter the length for your list:");
     while (true) {
@@ -79,16 +58,14 @@ public class SortingVisualizationRunner {
       }
     }
 
-    //test
-    ArrayList<Integer> list = func.randomList(1, chosenMax, chosenLength);
-    visualizer.drawIteration(list);
-
-    /*fucking around
-    for (int i = 0; i < 150; i++) {
-      list = func.randomList(0, 100, 50);
-      visualizer.drawIteration(list);
-      sortingScene.pause(0.2);
-    }*/
+    if (chosenAlgorithm.equals("s")) {
+      ArrayList<Integer> list = func.randomListEqualSteps(chosenLength);
+      sorting.selectionSort(list);
+    }
+    else if (chosenAlgorithm.equals("i")) {
+      ArrayList<Integer> list = func.randomListEqualSteps(chosenLength);
+      sorting.insertionSort(list);
+    }
 
     Theater.playScenes(sortingScene);
     userInput.close();
